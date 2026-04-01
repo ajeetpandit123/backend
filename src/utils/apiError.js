@@ -1,27 +1,40 @@
-class apiError extends Error{
+// Custom API Error class
+class apiError extends Error {
+
     constructor(
         statusCode,
-        message="Something went wrong",
-        errors=[],
-        stack=""
+        message = "Something went wrong",
+        errors = [],
+        stack = ""
+    ) {
 
-    ){
+        // Call parent Error constructor
         super(message)
+
+        // HTTP status code (e.g., 404, 500)
         this.statusCode = statusCode
-        this.data = null,
+
+        // No data when error occurs
+        this.data = null
+
+        // Error message
         this.message = message
+
+        // Indicate failure
         this.success = false
+
+        // Array of detailed errors (validation, etc.)
         this.errors = errors
 
-
+        // Handle stack trace
         if (stack) {
-            
-            this.stack
-
-        }else{
-            Error.captureStackTrace(this,this.constructor)
+            this.stack = stack   // ✅ FIXED
+        } else {
+            // Automatically capture stack trace
+            Error.captureStackTrace(this, this.constructor)
         }
     }
 }
 
-export{apiError}
+// Export the class to use in other files
+export { apiError }
