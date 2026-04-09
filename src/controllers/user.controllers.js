@@ -139,7 +139,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
     const { email, username, password } = req.body
 
-    if (!username || !email) {
+    if (!username && !email) {
         throw new apiError(400, "username or email is required")
     }
 
@@ -163,7 +163,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
     const loggedInUser = await User.findById(user._id)
 
-    select("-password -refreshToken")
+    .select("-password -refreshToken")
 
     const options = {
         httpOnly:true,
@@ -196,8 +196,8 @@ const logoutUser  = asyncHandler(async(req,res)=>{
  await  User.findByIdAndUpdate(
     req.user._id,
     {
-         $set:{
-            refreshToken
+         $unset:{
+            refreshToken:1
          }
     },{
         new:true
